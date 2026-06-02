@@ -281,7 +281,12 @@ def render_log_table(tasks, session_key, key_prefix):
         c_cols[6].markdown(f"<span style='{mono}{row_style}'>{task.get('facets', '—')}</span>", unsafe_allow_html=True)
 
         if task["activity"] == "analyzing":
-            new_failed = c_cols[7].checkbox("", value=is_failed, key=f"{key_prefix}_fail_{i}")
+            new_failed = c_cols[7].checkbox(
+                "",
+                value=is_failed,
+                key=f"{key_prefix}_fail_{i}"
+            )
+
             if new_failed != is_failed:
                 st.session_state[session_key][i]["failed"] = new_failed
                 st.rerun()
