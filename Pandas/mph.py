@@ -49,8 +49,9 @@ st.markdown("""
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def parse_time(t):
-    """Parse time strings like '6:50 PM' or '18:50'."""
     t = t.strip()
+    t = t.split(",")[-1].strip()  # removes date part if present
+
     for fmt in ("%I:%M %p", "%H:%M", "%I:%M%p"):
         try:
             return datetime.strptime(t, fmt)
