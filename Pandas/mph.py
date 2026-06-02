@@ -169,12 +169,18 @@ def calc_stats(tasks):
     a_mins = sum(t["minutes"] for t in a_all)
     r_mins = sum(t["minutes"] for t in r_all)
 
-    total_tasks  = len(tasks)
-    failed_count = sum(1 for t in tasks if t["failed"])
+    analyzing_tasks = [t for t in tasks if t["activity"] == "analyzing"]
+
+    total_analyzing  = len(analyzing_tasks)
+    failed_analyzing = sum(1 for t in analyzing_tasks if t["failed"])
+
+    accuracy = (
+        (total_analyzing - failed_analyzing) / total_analyzing * 100
+        if total_analyzing > 0 else 100
+    )
 
     mph = (len(a_done) / a_mins * 60) if a_mins > 0 else 0
     rph = (len(r_done) / r_mins * 60) if r_mins > 0 else 0
-    accuracy        = ((total_tasks - failed_count) / total_tasks * 100) if total_tasks > 0 else 100
     total_task_mins = sum(t["minutes"] for t in tasks)
     return mph, rph, accuracy, total_task_mins
 
