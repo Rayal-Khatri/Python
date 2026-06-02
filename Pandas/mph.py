@@ -292,9 +292,6 @@ def render_log_table(tasks, session_key, key_prefix):
                 st.rerun()
         else:
             c_cols[7].markdown("—")
-        if new_failed != is_failed:
-            st.session_state[session_key][i]["failed"] = new_failed
-            st.rerun()
 
         st.markdown("<hr style='margin:2px 0;border-color:#1a1a2e'>", unsafe_allow_html=True)
 
