@@ -163,7 +163,10 @@ def calc_stats(tasks):
     """Returns mph, rph, accuracy, total_task_mins."""
     completed = [t for t in tasks if not t["failed"]]
     a_done    = [t for t in completed if t["activity"] == "analyzing"]
-    r_done    = [t for t in completed if t["activity"] == "reviewing"]
+    r_done = [
+                t for t in tasks
+                if t["activity"] == "reviewing" and not t["failed"]
+            ]
     a_all     = [t for t in tasks     if t["activity"] == "analyzing"]
     r_all     = [t for t in tasks     if t["activity"] == "reviewing"]
 
@@ -277,7 +280,13 @@ def render_log_table(tasks, session_key, key_prefix):
         c_cols[5].markdown(f"<span style='{mono}{row_style}'>{task.get('guides', '—')}</span>", unsafe_allow_html=True)
         c_cols[6].markdown(f"<span style='{mono}{row_style}'>{task.get('facets', '—')}</span>", unsafe_allow_html=True)
 
-        new_failed = c_cols[7].checkbox("", value=is_failed, key=f"{key_prefix}_fail_{i}")
+        if task["activity"] == "analyzing":
+            new_failed = c_cols[7].checkbox("", value=is_failed, key=f"{key_prefix}_fail_{i}")
+            if new_failed != is_failed:
+                st.session_state[session_key][i]["failed"] = new_failed
+                st.rerun()
+        else:
+            c_cols[7].markdown("—")
         if new_failed != is_failed:
             st.session_state[session_key][i]["failed"] = new_failed
             st.rerun()
