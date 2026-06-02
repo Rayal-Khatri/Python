@@ -330,6 +330,9 @@ with tab1:
         tasks   = st.session_state.parsed_tasks
         skipped = st.session_state.get("parsed_skipped", [])
 
+        st.write("Parsed rows:", len(tasks))
+        st.write("Skipped rows:", len(skipped))
+
         st.divider()
 
         p_col1, p_col2 = st.columns([1, 3])
